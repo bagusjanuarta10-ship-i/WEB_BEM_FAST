@@ -2,6 +2,7 @@
 require __DIR__ . '/../partials/navigation.php';
 $escape = static function ($value): string { return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8'); };
 $isEditing = ($formData['id_kegiatan'] ?? '') !== '';
+$hasSearch = trim((string) ($search ?? '')) !== '' || trim((string) ($dateFrom ?? '')) !== '' || trim((string) ($dateTo ?? '')) !== '';
 ?>
 <main class="page">
 <header class="page-header">
@@ -14,10 +15,21 @@ $isEditing = ($formData['id_kegiatan'] ?? '') !== '';
 
 <?php if ($currentUser && $currentUser['role'] === 'admin'): ?><p><a class="button-link" href="index.php?action=kelas&amp;add=1">Tambah Kegiatan</a></p><?php endif; ?>
 
+<form method="get" action="index.php" class="search-form activity-search-form">
+    <input type="hidden" name="action" value="kelas">
+    <div class="activity-search-keyword"><label for="search-kegiatan">Kata kunci</label><input id="search-kegiatan" name="search" type="search" value="<?= $escape($search) ?>" placeholder="Nama, lokasi, divisi, periode..."></div>
+    <div class="activity-search-date"><label for="date-from">Dari tanggal</label><input id="date-from" name="date_from" type="date" max="<?= $escape($dateTo) ?>" value="<?= $escape($dateFrom) ?>"></div>
+    <div class="activity-search-date"><label for="date-to">Sampai tanggal</label><input id="date-to" name="date_to" type="date" min="<?= $escape($dateFrom) ?>" value="<?= $escape($dateTo) ?>"></div>
+    <div class="activity-search-actions">
+        <button type="submit" class="search-button"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"></circle><path d="m16 16 4 4"></path></svg><span>Cari</span></button>
+        <?php if ($hasSearch): ?><a href="index.php?action=kelas">Reset</a><?php endif; ?>
+    </div>
+</form>
+
 <?php if (!$kegiatan): ?>
-<section class="empty-state"><h2>Belum ada kegiatan</h2><p>Agenda organisasi akan ditampilkan di halaman ini setelah data kegiatan ditambahkan.</p></section>
+<section class="empty-state"><h2><?= $hasSearch ? 'Kegiatan tidak ditemukan' : 'Belum ada kegiatan' ?></h2><p><?= $hasSearch ? 'Coba kata kunci atau rentang tanggal lain.' : 'Agenda organisasi akan ditampilkan di halaman ini setelah data kegiatan ditambahkan.' ?></p></section>
 <?php else: ?>
-<p class="result-count"><?= count($kegiatan) ?> kegiatan terdaftar</p>
+<p class="result-count"><?= count($kegiatan) ?> kegiatan ditemukan<?= $search !== '' ? ' untuk pencarian ' . $escape($search) : '' ?></p>
 <div class="table-wrap"><table><thead><tr>
 <th scope="col">Nama Kegiatan</th><th scope="col">Tanggal</th><th scope="col">Periode</th><th scope="col">Penyelenggara</th><th scope="col">Lokasi</th><th scope="col">Deskripsi</th>
 <?php if ($currentUser && $currentUser['role'] === 'admin'): ?><th scope="col">Aksi</th><?php endif; ?>

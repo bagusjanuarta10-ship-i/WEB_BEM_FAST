@@ -48,16 +48,39 @@ class KegiatanModel
         $statement->execute($data);
     }
 
-    public function getAll(): array
+    public function getAll(string $search = '', string $dateFrom = '', string $dateTo = ''): array
     {
-        return $this->database->query(
-            'SELECT k.id_kegiatan, k.nama_kegiatan, k.tanggal_kegiatan, k.lokasi, k.deskripsi,
-                    k.id_periode, k.id_divisi, p.nama_periode, d.nama_divisi
-             FROM kegiatan k
-             INNER JOIN periode p ON p.id_periode = k.id_periode
-             LEFT JOIN divisi d ON d.id_divisi = k.id_divisi
-             ORDER BY k.tanggal_kegiatan DESC, k.nama_kegiatan'
-        )->fetchAll();
+        $where = [];
+        $params = [];
+
+        if ($search !== '') {
+            $where[] = '(k.nama_kegiatan LIKE :search0 OR k.lokasi LIKE :search1 OR k.deskripsi LIKE :search2 OR p.nama_periode LIKE :search3 OR d.nama_divisi LIKE :search4)';
+            for ($index = 0; $index < 5; $index++) {
+                $params['search' . $index] = '%' . $search . '%';
+            }
+        }
+        if ($dateFrom !== '') {
+            $where[] = 'k.tanggal_kegiatan >= :date_from';
+            $params['date_from'] = $dateFrom;
+        }
+        if ($dateTo !== '') {
+            $where[] = 'k.tanggal_kegiatan <= :date_to';
+            $params['date_to'] = $dateTo;
+        }
+
+        $sql = 'SELECT k.id_kegiatan, k.nama_kegiatan, k.tanggal_kegiatan, k.lokasi, k.deskripsi,
+                       k.id_periode, k.id_divisi, p.nama_periode, d.nama_divisi
+                FROM kegiatan k
+                INNER JOIN periode p ON p.id_periode = k.id_periode
+                LEFT JOIN divisi d ON d.id_divisi = k.id_divisi';
+        if ($where) {
+            $sql .= ' WHERE ' . implode(' AND ', $where);
+        }
+        $sql .= ' ORDER BY k.tanggal_kegiatan DESC, k.nama_kegiatan';
+
+        $statement = $this->database->prepare($sql);
+        $statement->execute($params);
+        return $statement->fetchAll();
     }
 
     public function get(int $id): ?array

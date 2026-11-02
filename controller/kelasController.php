@@ -84,7 +84,26 @@ class kelasController
 
         $periode = $this->model->getPeriodOptions();
         $divisi = $this->model->getDivisionOptions();
-        $kegiatan = $this->model->getAll();
+        $search = trim((string) ($_GET['search'] ?? ''));
+        $dateFrom = trim((string) ($_GET['date_from'] ?? ''));
+        $dateTo = trim((string) ($_GET['date_to'] ?? ''));
+        $searchErrors = [];
+
+        foreach (['dateFrom' => $dateFrom, 'dateTo' => $dateTo] as $label => $date) {
+            if ($date !== '') {
+                $parsed = DateTime::createFromFormat('!Y-m-d', $date);
+                if (!$parsed || $parsed->format('Y-m-d') !== $date) {
+                    $searchErrors[] = 'Format tanggal pencarian tidak valid.';
+                    break;
+                }
+            }
+        }
+        if ($dateFrom !== '' && $dateTo !== '' && $dateFrom > $dateTo) {
+            $searchErrors[] = 'Tanggal mulai tidak boleh lebih akhir daripada tanggal selesai.';
+        }
+        $errors = array_merge($errors, $searchErrors);
+
+        $kegiatan = $searchErrors ? [] : $this->model->getAll($search, $dateFrom, $dateTo);
         require __DIR__ . '/../views/kelas/index.php';
     }
 }
