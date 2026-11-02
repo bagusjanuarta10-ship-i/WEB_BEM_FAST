@@ -149,6 +149,7 @@ class KeanggotaanModel
                 );
             } else {
                 $membershipValues['id_keanggotaan'] = (int) $formData['id_keanggotaan'];
+                unset($membershipValues['id_mahasiswa']);
                 $statement = $this->database->prepare(
                     'UPDATE keanggotaan SET id_periode = :id_periode, id_divisi = :id_divisi,
                         id_jabatan = :id_jabatan, tanggal_bergabung = :tanggal_bergabung, status = :status
