@@ -1,15 +1,15 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="views/partials/site.css?v=21">
+<link rel="stylesheet" href="views/partials/site.css?v=22">
 
 <?php $navUser = Auth::currentUser(); ?>
 <nav class="site-nav" aria-label="Navigasi utama">
-    <a class="brand" href="index.php?action=about">BEM FST</a>
+    <a class="brand" href="index.php?action=tentang">BEM FST</a>
     <div class="nav-links">
-        <a href="index.php?action=mahasiswa">Anggota</a>
-        <a href="index.php?action=kelas">Kegiatan</a>
+        <a href="index.php?action=anggota">Anggota</a>
+        <a href="index.php?action=kegiatan">Kegiatan</a>
         <a href="index.php?action=divisi">Divisi</a>
         <a href="index.php?action=jabatan">Jabatan</a>
-        <a href="index.php?action=about">Tentang</a>
+        <a href="index.php?action=tentang">Tentang</a>
         <?php if ($navUser && $navUser['role'] === 'admin'): ?>
             <a href="index.php?action=users">Kelola Akun</a>
         <?php endif; ?>

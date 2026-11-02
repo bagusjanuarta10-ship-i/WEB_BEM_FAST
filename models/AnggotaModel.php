@@ -1,6 +1,6 @@
 <?php
 
-class MahasiswaModel
+class AnggotaModel
 {
     private PDO $database;
 

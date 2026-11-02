@@ -1,6 +1,6 @@
 <?php
 
-class DataOrganisasiModel
+class DivisiJabatanModel
 {
     private PDO $database;
 

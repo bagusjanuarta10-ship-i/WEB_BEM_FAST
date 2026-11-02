@@ -64,8 +64,8 @@ Agar dapat mengelola data, akun harus memiliki peran `admin`. Ubah peran melalui
 ## Struktur Folder
 
 ```text
-controller/  Controller dan penanganan alur aplikasi
-models/      Query database dan logika data
+controller/  Controller: Anggota, Kegiatan, Tentang, Divisi, Jabatan, dan autentikasi
+models/      Model database sesuai nama fitur navigasi
 views/       Tampilan PHP beserta partial navigasi dan footer
 config/      Konfigurasi database dan autentikasi
 database/    File SQL struktur dan data awal database

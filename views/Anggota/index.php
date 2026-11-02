@@ -17,7 +17,7 @@ $escape = static function ($value): string {
     <?php endif; ?>
 
     <form method="get" action="index.php" class="search-form">
-        <input type="hidden" name="action" value="mahasiswa">
+        <input type="hidden" name="action" value="anggota">
         <label for="search-member">Cari anggota</label>
         <input id="search-member" name="search" type="search" value="<?= $escape($search) ?>" placeholder="Nama, NIM, divisi, jabatan...">
         <button type="submit" class="search-button">
@@ -27,7 +27,7 @@ $escape = static function ($value): string {
             </svg>
             <span>Cari</span>
         </button>
-        <?php if ($search !== ''): ?><a href="index.php?action=mahasiswa">Reset</a><?php endif; ?>
+        <?php if ($search !== ''): ?><a href="index.php?action=anggota">Reset</a><?php endif; ?>
     </form>
 
     <?php if (!$anggota): ?>
@@ -77,7 +77,7 @@ $escape = static function ($value): string {
                             </td>
                             <?php if ($currentUser && $currentUser['role'] === 'admin'): ?>
                                 <td>
-                                    <a class="action-icon" href="index.php?action=keanggotaan&amp;edit=<?= $escape($item['id_keanggotaan']) ?>&amp;return_to=mahasiswa"
+                                    <a class="action-icon" href="index.php?action=keanggotaan&amp;edit=<?= $escape($item['id_keanggotaan']) ?>&amp;return_to=anggota"
                                         aria-label="Ubah <?= $escape($item['nama']) ?>" title="Ubah">
                                         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                                             <path d="M12 20h9"></path>
@@ -88,7 +88,7 @@ $escape = static function ($value): string {
                                         <input type="hidden" name="csrf_token" value="<?= $escape($csrfToken) ?>">
                                         <input type="hidden" name="operation" value="delete">
                                         <input type="hidden" name="id_keanggotaan" value="<?= $escape($item['id_keanggotaan']) ?>">
-                                        <input type="hidden" name="return_to" value="mahasiswa">
+                                        <input type="hidden" name="return_to" value="anggota">
                                         <button class="icon-button delete-icon" type="submit"
                                             aria-label="Hapus <?= $escape($item['nama']) ?>" title="Hapus"
                                             onclick="return confirm('Hapus data anggota ini?')">
@@ -119,7 +119,7 @@ $escape = static function ($value): string {
                                 <span aria-hidden="true">&laquo; Sebelumnya</span>
                             </span>
                         <?php else: ?>
-                            <a class="page-link" href="index.php?action=mahasiswa&amp;page=<?= $page - 1 ?>&amp;search=<?= urlencode($search) ?>" aria-label="Halaman sebelumnya">
+                            <a class="page-link" href="index.php?action=anggota&amp;page=<?= $page - 1 ?>&amp;search=<?= urlencode($search) ?>" aria-label="Halaman sebelumnya">
                                 <span aria-hidden="true">&laquo; Sebelumnya</span>
                             </a>
                         <?php endif; ?>
@@ -128,7 +128,7 @@ $escape = static function ($value): string {
                     <?php for ($pageNumber = 1; $pageNumber <= $totalPages; $pageNumber++): ?>
                         <li class="page-item <?= $pageNumber === $page ? 'active' : '' ?>">
                             <a class="page-link"
-                                href="index.php?action=mahasiswa&amp;page=<?= $pageNumber ?>&amp;search=<?= urlencode($search) ?>"
+                                href="index.php?action=anggota&amp;page=<?= $pageNumber ?>&amp;search=<?= urlencode($search) ?>"
                                 <?= $pageNumber === $page ? 'aria-current="page"' : '' ?>>
                                 <?= $pageNumber ?>
                             </a>
@@ -141,7 +141,7 @@ $escape = static function ($value): string {
                                 <span aria-hidden="true">Selanjutnya &raquo;</span>
                             </span>
                         <?php else: ?>
-                            <a class="page-link" href="index.php?action=mahasiswa&amp;page=<?= $page + 1 ?>&amp;search=<?= urlencode($search) ?>" aria-label="Halaman berikutnya">
+                            <a class="page-link" href="index.php?action=anggota&amp;page=<?= $page + 1 ?>&amp;search=<?= urlencode($search) ?>" aria-label="Halaman berikutnya">
                                 <span aria-hidden="true">Selanjutnya &raquo;</span>
                             </a>
                         <?php endif; ?>

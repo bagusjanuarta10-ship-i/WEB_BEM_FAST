@@ -1,13 +1,13 @@
 <?php
 
-class DataOrganisasiController
+class DivisiJabatanController
 {
-    private DataOrganisasiModel $model;
+    private DivisiJabatanModel $model;
 
     public function __construct()
     {
         $database = require __DIR__ . '/../config/database.php';
-        $this->model = new DataOrganisasiModel($database);
+        $this->model = new DivisiJabatanModel($database);
     }
 
     public function divisi(): void
@@ -112,6 +112,6 @@ class DataOrganisasiController
         $columns = $isDivision
             ? ['nama_divisi' => 'Nama Divisi', 'nama_ketua' => 'Nama Ketua']
             : ['nama_jabatan' => 'Nama Jabatan', 'nama_ketua' => 'Nama Ketua'];
-        require __DIR__ . '/../views/data-organisasi/index.php';
+        require __DIR__ . '/../views/DivisiJabatan/index.php';
     }
 }

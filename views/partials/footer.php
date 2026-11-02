@@ -6,11 +6,11 @@
         </div>
 
         <nav class="footer-nav" aria-label="Navigasi footer">
-            <a href="index.php?action=mahasiswa">Anggota</a>
-            <a href="index.php?action=kelas">Kegiatan</a>
+            <a href="index.php?action=anggota">Anggota</a>
+            <a href="index.php?action=kegiatan">Kegiatan</a>
             <a href="index.php?action=divisi">Divisi</a>
             <a href="index.php?action=jabatan">Jabatan</a>
-            <a href="index.php?action=about">Tentang</a>
+            <a href="index.php?action=tentang">Tentang</a>
         </nav>
     </div>
 

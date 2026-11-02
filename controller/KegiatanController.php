@@ -1,5 +1,5 @@
 <?php
-class kelasController
+class KegiatanController
 {
     private KegiatanModel $model;
 
@@ -9,7 +9,7 @@ class kelasController
         $this->model = new KegiatanModel($database);
     }
 
-    public function kelas(): void
+    public function kegiatan(): void
     {
         $currentUser = Auth::currentUser();
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && (!$currentUser || $currentUser['role'] !== 'admin')) {
@@ -38,7 +38,7 @@ class kelasController
                         try {
                             $this->model->delete((int) $id);
                             $_SESSION['flash_message'] = 'Kegiatan berhasil dihapus.';
-                            header('Location: index.php?action=kelas'); exit;
+                            header('Location: index.php?action=kegiatan'); exit;
                         } catch (PDOException $exception) {
                             error_log($exception->getMessage()); $errors[] = 'Kegiatan gagal dihapus.';
                         }
@@ -62,7 +62,7 @@ class kelasController
                             $data = ['nama_kegiatan' => $formData['nama_kegiatan'], 'tanggal_kegiatan' => $formData['tanggal_kegiatan'], 'lokasi' => $formData['lokasi'] !== '' ? $formData['lokasi'] : null, 'deskripsi' => $formData['deskripsi'] !== '' ? $formData['deskripsi'] : null, 'id_periode' => (int) $formData['id_periode'], 'id_divisi' => $formData['id_divisi'] !== '' ? (int) $formData['id_divisi'] : null];
                             if ($formData['id_kegiatan'] !== '') { $this->model->update((int) $formData['id_kegiatan'], $data); $_SESSION['flash_message'] = 'Kegiatan berhasil diperbarui.'; }
                             else { $this->model->create($data); $_SESSION['flash_message'] = 'Kegiatan berhasil ditambahkan.'; }
-                            header('Location: index.php?action=kelas'); exit;
+                            header('Location: index.php?action=kegiatan'); exit;
                         } catch (PDOException $exception) {
                             error_log($exception->getMessage()); $errors[] = 'Kegiatan gagal disimpan. Periksa isian dan koneksi database.';
                         }
@@ -104,6 +104,6 @@ class kelasController
         $errors = array_merge($errors, $searchErrors);
 
         $kegiatan = $searchErrors ? [] : $this->model->getAll($search, $dateFrom, $dateTo);
-        require __DIR__ . '/../views/kelas/index.php';
+        require __DIR__ . '/../views/Kegiatan/index.php';
     }
 }

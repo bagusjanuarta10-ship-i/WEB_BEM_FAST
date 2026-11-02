@@ -26,7 +26,7 @@ class KeanggotaanController
         }
 
         $errors = [];
-        $returnTo = ($_GET['return_to'] ?? '') === 'mahasiswa' ? 'mahasiswa' : 'keanggotaan';
+        $returnTo = in_array($_GET['return_to'] ?? '', ['anggota', 'mahasiswa'], true) ? 'anggota' : 'keanggotaan';
         $flashMessage = $_SESSION['flash_message'] ?? '';
         unset($_SESSION['flash_message']);
         $formData = [
@@ -36,7 +36,7 @@ class KeanggotaanController
         ];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $returnTo = ($_POST['return_to'] ?? '') === 'mahasiswa' ? 'mahasiswa' : 'keanggotaan';
+            $returnTo = in_array($_POST['return_to'] ?? '', ['anggota', 'mahasiswa'], true) ? 'anggota' : 'keanggotaan';
             if (!Auth::isValidCsrfToken($_POST['csrf_token'] ?? null)) {
                 $errors[] = 'Sesi formulir tidak valid. Muat ulang halaman dan coba lagi.';
             } else {
@@ -139,7 +139,7 @@ class KeanggotaanController
 
     private function redirectAfterSave(string $returnTo): void
     {
-        $action = $returnTo === 'mahasiswa' ? 'mahasiswa' : 'keanggotaan';
+        $action = $returnTo === 'anggota' ? 'anggota' : 'keanggotaan';
         header('Location: index.php?action=' . $action);
         exit;
     }

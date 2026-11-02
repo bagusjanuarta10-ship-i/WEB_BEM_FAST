@@ -1,12 +1,12 @@
 <?php
-class MahasiswaController
+class AnggotaController
 {
-    private MahasiswaModel $model;
+    private AnggotaModel $model;
 
     public function __construct()
     {
         $database = require __DIR__ . '/../config/database.php';
-        $this->model = new MahasiswaModel($database);
+        $this->model = new AnggotaModel($database);
     }
 
     public function index(): void
@@ -33,6 +33,6 @@ class MahasiswaController
         $page = min($page, $totalPages);
         $anggota = $this->model->getAllMembers($search, $perPage, ($page - 1) * $perPage);
 
-        require __DIR__ . '/../views/mahasiswa/index.php';
+        require __DIR__ . '/../views/Anggota/index.php';
     }
 }

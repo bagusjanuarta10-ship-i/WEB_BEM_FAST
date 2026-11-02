@@ -27,7 +27,7 @@ class AuthController
                 } else {
                     session_regenerate_id(true);
                     $_SESSION['user_id'] = (int) $user['id_user'];
-                    header('Location: index.php?action=about');
+                    header('Location: index.php?action=tentang');
                     exit;
                 }
             }
@@ -72,7 +72,7 @@ class AuthController
                         session_regenerate_id(true);
                         $_SESSION['user_id'] = $userId;
                         $_SESSION['flash_message'] = 'Pendaftaran berhasil. Akun Anda memiliki akses pengguna.';
-                        header('Location: index.php?action=about');
+                        header('Location: index.php?action=tentang');
                         exit;
                     } catch (PDOException $exception) {
                         if ($exception->getCode() === '23000') {
@@ -133,7 +133,7 @@ class AuthController
                         );
                         session_regenerate_id(true);
                         $_SESSION['flash_message'] = 'Kata sandi berhasil diubah.';
-                        header('Location: index.php?action=about');
+                        header('Location: index.php?action=tentang');
                         exit;
                     } catch (PDOException $exception) {
                         error_log($exception->getMessage());
@@ -158,7 +158,7 @@ class AuthController
         $_SESSION = [];
         session_regenerate_id(true);
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-        header('Location: index.php?action=about');
+        header('Location: index.php?action=tentang');
         exit;
     }
 
