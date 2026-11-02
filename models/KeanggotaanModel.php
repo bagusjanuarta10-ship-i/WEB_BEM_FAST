@@ -71,6 +71,30 @@ class KeanggotaanModel
         return (int) $statement->fetchColumn() > 0;
     }
 
+    public function nimExistsForAnotherStudent(string $nim, int $studentId): bool
+    {
+        $statement = $this->database->prepare(
+            'SELECT COUNT(*) FROM mahasiswa WHERE nim = :nim AND id_mahasiswa <> :student_id'
+        );
+        $statement->execute(['nim' => $nim, 'student_id' => $studentId]);
+        return (int) $statement->fetchColumn() > 0;
+    }
+
+    public function membershipExistsForAnotherRecord(int $studentId, int $periodId, int $membershipId): bool
+    {
+        $statement = $this->database->prepare(
+            'SELECT COUNT(*) FROM keanggotaan
+             WHERE id_mahasiswa = :student_id AND id_periode = :period_id
+             AND id_keanggotaan <> :membership_id'
+        );
+        $statement->execute([
+            'student_id' => $studentId,
+            'period_id' => $periodId,
+            'membership_id' => $membershipId,
+        ]);
+        return (int) $statement->fetchColumn() > 0;
+    }
+
     public function save(array $formData): void
     {
         $this->database->beginTransaction();

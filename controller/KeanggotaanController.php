@@ -74,6 +74,20 @@ class KeanggotaanController
                     if ($formData['program_studi'] === '' || strlen($formData['program_studi']) > 100) $errors[] = 'Program studi wajib diisi dan maksimal 100 karakter.';
                     if (strlen($formData['email']) > 100 || ($formData['email'] !== '' && filter_var($formData['email'], FILTER_VALIDATE_EMAIL) === false)) $errors[] = 'Masukkan alamat email yang valid, maksimal 100 karakter.';
                     $errors = array_merge($errors, $this->validateForm($formData));
+                    if ($formData['id_keanggotaan'] !== '' && !$errors) {
+                        $membershipId = (int) $formData['id_keanggotaan'];
+                        $studentId = (int) $formData['id_mahasiswa'];
+                        if ($this->model->nimExistsForAnotherStudent($formData['nim'], $studentId)) {
+                            $errors[] = 'NIM sudah digunakan oleh data mahasiswa lain.';
+                        }
+                        if ($this->model->membershipExistsForAnotherRecord(
+                            $studentId,
+                            (int) $formData['id_periode'],
+                            $membershipId
+                        )) {
+                            $errors[] = 'Mahasiswa ini sudah memiliki keanggotaan pada periode yang dipilih.';
+                        }
+                    }
                     if (!$errors) {
                         try {
                             $this->model->save($formData);
@@ -82,7 +96,7 @@ class KeanggotaanController
                         } catch (PDOException $exception) {
                             error_log($exception->getMessage());
                             $errors[] = $exception->getCode() === '23000'
-                                ? 'NIM sudah digunakan atau anggota sudah tercatat pada periode tersebut.'
+                                ? 'NIM sudah digunakan atau mahasiswa sudah tercatat pada periode tersebut. Periksa kembali NIM dan periode.'
                                 : 'Data anggota gagal disimpan. Periksa isian dan koneksi database.';
                         } catch (RuntimeException $exception) {
                             $errors[] = $exception->getMessage();
